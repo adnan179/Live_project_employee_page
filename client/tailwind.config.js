@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        mea: ['"Mea Culpa"', 'cursive'], // add a fallback like 'cursive'
+      },
+    },
   },
   plugins: [],
 }

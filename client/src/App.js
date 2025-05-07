@@ -5,17 +5,20 @@ import Navbar from './components/Navbar';
 import Employees from './components/Employees';
 import Home from './components/Home';
 import EmployeeModal from './components/EmployeeModal';
+import { useState } from 'react';
 
 const queryClient = new QueryClient();
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <Navbar /> {/* This will show on every route */}
+        <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/> {/* This will show on every route */}
         <Routes>
           <Route path='/' element={<Home/>} />
-          <Route path="/employees" element={<Employees />} />
+          <Route path="/employees" element={<Employees searchTerm={searchTerm} />} />
           <Route path='/employees/:employeeId' element={<EmployeeModal />} />
         </Routes>
       </Router>

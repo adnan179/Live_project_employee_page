@@ -2,10 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import EmployeeCard from './EmployeeCard';
 import LoadingSpinner from "../utils/LoadingSpinner";
 import { useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
 
 //function to fetch employees data
-const fetchEmployees = async () => {
-  const response = await fetch("http://localhost:3030/employees");
+const fetchEmployees = async (searchTerm) => {
+  const endpoint = searchTerm
+  ? `http://localhost:3030/employees?q=${encodeURIComponent(searchTerm.trim())}`
+  : "http://localhost:3030/employees";
+  const response = await fetch(endpoint);
   if(!response.ok){
     throw new Error("Failed to fetch employees data");
   }
@@ -22,12 +26,24 @@ const fetchEmployees = async () => {
   console.log(mappedEmployyeData);
   return mappedEmployyeData;
 };
-const Employees = () => {
+const Employees = ({ searchTerm }) => {
   const navigate = useNavigate();
+  const [debouncedSearch, setDebouncedSearch] =useState(searchTerm)
+
+  // Debounce the search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 300); // adjust delay as needed
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
 
   const { data: employees, isLoading,isError } = useQuery({
-    queryKey:['employees'],
-    queryFn:fetchEmployees
+    queryKey:['employees',debouncedSearch],
+    queryFn:() => fetchEmployees(debouncedSearch),
+    keepPreviousData:true
   });
 
   const handleClicks = (id) => {
@@ -48,11 +64,13 @@ const Employees = () => {
       </div>
     )
   }
+  
+
 
   
   return (
     <section className='w-full min-h-screen p-10'>
-      <div className='grid grid-cols-4 gap-5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
         {Array.isArray(employees) && employees?.map((emp,idx) => (
           <div key={idx} onClick={() => handleClicks(emp.id)}>
             <EmployeeCard employeeData={emp}/>
