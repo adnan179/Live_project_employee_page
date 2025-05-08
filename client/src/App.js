@@ -8,6 +8,8 @@ import EmployeeModal from './components/EmployeeModal';
 import { useState } from 'react';
 import { Bounce, ToastContainer } from "react-toastify";
 
+
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -19,7 +21,7 @@ function App() {
         autoClose={1000} 
         position='bottom-center' 
         transition={Bounce} 
-        theme='light'
+        theme='colored'
       />
       <Router>
         <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/> {/* This will show on every route */}
