@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import BackIcon from "../utils/BackIcon";
+import AddBadge from './AddBadge';
 
 //function to fetch employee data using id from the params
 const fetchEmployeeById = async (id) => {
-  console.log(id)
   const response = await fetch(`http://localhost:3030/employees/${id}`);
   if(!response.ok){
     throw new Error("Failed to fetch employee data");
@@ -17,6 +17,7 @@ const fetchEmployeeById = async (id) => {
 const EmployeeModal = () => {
   const { employeeId } = useParams();
   const navigate = useNavigate();
+  
 
   const { data: employee, isLoading, isError } = useQuery({
     queryKey:['employee', employeeId],
@@ -41,6 +42,8 @@ const EmployeeModal = () => {
               <h1 className='text-[20px] font-bold'>Name: <span className='text-blue-400 font-medium'>{employee.firstName + " "+employee.lastName}</span></h1>
               <h1 className='text-[20px] font-bold'>Designation: <span className='text-blue-400 font-medium'>{employee.jobTitle}</span></h1>
               <h1 className='text-[20px] font-bold'>Team: <span className='text-blue-400 font-medium'>{employee.teamName}</span></h1>
+              <div className='w-full text-blue-500 text-[36px] font-mea flex justify-center items-center mt-4'>Badges</div>
+              <div className='w-full h-[2px] bg-gray-200 mt-2'></div>
               <div className='grid grid-cols-2 gap-3 mt-3'>
                 {employee?.badgeDetails?.length === 0 ? (
                   <p className='text-[24px] font-medium text-red-400 col-span-2 text-center'>Work hard and get a badge!!</p>
@@ -54,6 +57,7 @@ const EmployeeModal = () => {
                   ))
                 )}
               </div>
+              <AddBadge />
           </>
         )}
       </div>
