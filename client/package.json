@@ -5,13 +5,10 @@
   "dependencies": {
     "@tanstack/react-query": "^5.75.2",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.5.3",
-    "react-router-dom": "^7.5.3",
+    "react-router-dom": "^7.6.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "web-vitals": "^2.1.4"
@@ -41,6 +38,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "jest": "^27.5.1",
+    "msw": "^2.7.6",
     "tailwindcss": "^3.4.17"
   }
 }
