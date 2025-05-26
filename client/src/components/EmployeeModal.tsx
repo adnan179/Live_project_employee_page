@@ -3,25 +3,19 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import BackIcon from "../utils/BackIcon";
-import AddBadge from './AddBadge';
+import AddBadge from './AddBadge.tsx';
+import { fetchEmployeeById } from '../services/employeeService.ts';
 
-//function to fetch employee data using id from the params
-const fetchEmployeeById = async (id) => {
-  const response = await fetch(`http://localhost:3030/employees/${id}`);
-  if(!response.ok){
-    throw new Error("Failed to fetch employee data");
-  }
-  const data = await response.json();
-  return data;
-};
-const EmployeeModal = () => {
+
+const EmployeeModal :React.FC = () => {
   const { employeeId } = useParams();
   const navigate = useNavigate();
   
 
   const { data: employee, isLoading, isError } = useQuery({
     queryKey:['employee', employeeId],
-    queryFn:() => fetchEmployeeById(employeeId)
+    queryFn:() => fetchEmployeeById(employeeId!),
+    enabled: !!employeeId,
   });
 
   if(isError) throw new Error("Error fetching employee details");
@@ -36,12 +30,12 @@ const EmployeeModal = () => {
           ):(
             <>
               <div className='flex justify-center items-center w-full'>
-                <img src={`http://localhost:3030/${employee.imageFilePath}`} alt={employee.firstName + " "+ employee.lastName} className='w-20 h-20 object-contain'/>
+                <img src={employee?.image} alt={employee?.name} className='w-20 h-20 object-contain'/>
               </div>
-              <h1 className='text-[20px] font-bold'>ID: <span className='text-blue-400 font-medium'>{employee.id}</span></h1>
-              <h1 className='text-[20px] font-bold'>Name: <span className='text-blue-400 font-medium'>{employee.firstName + " "+employee.lastName}</span></h1>
-              <h1 className='text-[20px] font-bold'>Designation: <span className='text-blue-400 font-medium'>{employee.jobTitle}</span></h1>
-              <h1 className='text-[20px] font-bold'>Team: <span className='text-blue-400 font-medium'>{employee.teamName}</span></h1>
+              <h1 className='text-[20px] font-bold'>ID: <span className='text-blue-400 font-medium'>{employee?.id}</span></h1>
+              <h1 className='text-[20px] font-bold'>Name: <span className='text-blue-400 font-medium'>{employee?.name}</span></h1>
+              <h1 className='text-[20px] font-bold'>Designation: <span className='text-blue-400 font-medium'>{employee?.title}</span></h1>
+              <h1 className='text-[20px] font-bold'>Team: <span className='text-blue-400 font-medium'>{employee?.team}</span></h1>
               <div className='w-full text-blue-500 text-[36px] font-mea flex justify-center items-center mt-4'>Badges</div>
               <div className='w-full h-[2px] bg-gray-200 mt-2'></div>
               <div className='grid grid-cols-2 gap-3 mt-3'>
@@ -50,7 +44,7 @@ const EmployeeModal = () => {
                 ) : (
                   employee?.badgeDetails.map(b => (
                     <div key={b.id} className='flex flex-col justify-center items-center text-center'>
-                      <img src={`http://localhost:3030/${b.imageFilePath}`} alt={b.name} className='w-16 h-16 object-contain' />
+                      <img src={b.imageFilePath} alt={b.name} className='w-16 h-16 object-contain' />
                       <p className='text-sm md:text-lg font-medium'>Badge ID: {b.id}</p>
                       <p className='text-sm md:text-lg font-medium'>Badge Name: {b.name}</p>
                     </div>

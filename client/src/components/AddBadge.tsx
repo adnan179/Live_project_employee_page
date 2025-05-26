@@ -1,32 +1,20 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import AddIcon from '../utils/AddIcon';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '../utils/LoadingSpinner';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
+import { fetchBadges } from '../services/employeeService.ts';
+import { Badge } from '../types/employee';
 
-const fetchBadges = async () => {
-  try {
-    const response = await fetch("http://localhost:3030/badges");
-    if (!response.ok) {
-      const errorText = await response.text(); // useful to get detailed error
-      throw new Error(`Fetch failed: ${response.status} - ${errorText}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching badges:", error);
-    throw error; // Propagate to React Query so isError is set
-  }
-};
-
-const AddBadge = () => {
-  const { employeeId } = useParams();
+const AddBadge:React.FC = () => {
+  const { employeeId } = useParams<{ employeeId:string}>();
   const queryClient = useQueryClient();
 
-  const [isAddBadge, setIsAddBadge] = useState(false);
-  const [selectedBadge, setSelectedBadge] = useState("");
+  const [isAddBadge, setIsAddBadge] = useState<Boolean>(false);
+  const [selectedBadge, setSelectedBadge] = useState<string>("");
 
-  const { data: badges, isLoading, isError, error } = useQuery({
+  const { data: badges, isLoading, isError, error } = useQuery<Badge[], Error>({
     queryKey: ["badges"],
     queryFn: fetchBadges,
   });
@@ -50,11 +38,11 @@ const AddBadge = () => {
       setSelectedBadge("");
     },
     onError: (error) => {
-      toast.error("Failed to add badge!!", error.message)
+      toast.error(`Failed to add badge!! ${error.message}`);
     }
   });
 
-  const handleSelect = (e) => {
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedBadge(e.target.value);
   };
 
@@ -62,7 +50,7 @@ const AddBadge = () => {
     setIsAddBadge((prev) => !prev);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if(!selectedBadge) return alert("Please select a badge first");
     mutation.mutate();
@@ -89,7 +77,7 @@ const AddBadge = () => {
 
           {isAddBadge && (
             <>
-              <select
+              <select title='badge-select'
                 onChange={handleSelect}
                 value={selectedBadge}
                 className="border p-2 rounded-md"
