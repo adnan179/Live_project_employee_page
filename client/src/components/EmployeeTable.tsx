@@ -71,22 +71,22 @@ const EmployeeTable: React.FC<Props> = ({data, onRowClick}) => {
     });
 
     return(
-        <div className="space-y-4 hidden md:flex">
+        <div className="space-y-4 hidden md:flex md:flex-col">
             {/* filters */}
             <div className="flex gap-4">
-                <input 
-                    type="text"
-                    placeholder="Filter by Title"
-                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-                    onChange={(e) => table.getColumn("title")?.setFilterValue(e.target.value)}
-                    className="border px-4 py-2 rounded-md w-48 shadow-md"
-                />
                 <input 
                     type="text"
                     placeholder="Filter by Team"
                     value={(table.getColumn("team")?.getFilterValue() as string) ?? ""}
                     onChange={(e) => table.getColumn("team")?.setFilterValue(e.target.value)}
-                    className="border px-4 py-2 rounded-md w-48 shadow-md"
+                    className="border px-4 py-2 rounded-md w-48 shadow-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+                <input 
+                    type="text"
+                    placeholder="Filter by Title"
+                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+                    onChange={(e) => table.getColumn("title")?.setFilterValue(e.target.value)}
+                    className="border px-4 py-2 rounded-md w-48 shadow-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
             </div>
             {/* filters */}

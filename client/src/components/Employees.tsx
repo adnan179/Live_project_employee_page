@@ -62,8 +62,8 @@ const Employees: React.FC<Props> = ({ searchTerm }) => {
           <img src={cardIcon} alt='grid-view-format' className='w-8 h-8 object-contain'/>
           <h2>Grid view</h2>
         </button>
-        <button onClick={() => setIsTableView(true)} className={`${isTableView ? "bg-gray-200 px-4 py-2 rounded-lg":""} gap-2 items-center`}>
-          <img src={tableIcon} alt='grid-view-format' className='w-8 h-8 object-contain'/>
+        <button onClick={() => setIsTableView(true)} className={`${isTableView ? "bg-gray-200 px-4 py-2 rounded-lg":""} flex gap-2 items-center`}>
+          <img src={tableIcon} alt='table-view-format' className='w-8 h-8 object-contain'/>
           <h2>Table view</h2>
         </button>
       </div>
