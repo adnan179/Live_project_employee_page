@@ -56,24 +56,25 @@ const Employees: React.FC<Props> = ({ searchTerm }) => {
   
   return (
     <section className='w-full min-h-screen p-10'>
-      <div className='flex gap-3 mb-10'>
+      <p className='text-blue-400 font-medium text-lg hidden md:flex'>For filters, use the table view</p>
+      <div className='gap-3 mt-2 hidden md:flex'>
         <button onClick={() => setIsTableView(false)} className={`${!isTableView ? "bg-gray-200 px-4 py-2 rounded-lg":""} flex gap-2 items-center`}>
           <img src={cardIcon} alt='grid-view-format' className='w-8 h-8 object-contain'/>
           <h2>Grid view</h2>
         </button>
-        <button onClick={() => setIsTableView(true)} className={`${isTableView ? "bg-gray-200 px-4 py-2 rounded-lg":""} flex gap-2 items-center`}>
+        <button onClick={() => setIsTableView(true)} className={`${isTableView ? "bg-gray-200 px-4 py-2 rounded-lg":""} gap-2 items-center`}>
           <img src={tableIcon} alt='grid-view-format' className='w-8 h-8 object-contain'/>
           <h2>Table view</h2>
         </button>
       </div>
       {isTableView ? (
-        <div className='w-full h-full p-10'>
+        <div className='w-full h-full p-10 mt-2'>
           {Array.isArray(data) && (
             <EmployeeTable data={data} onRowClick={handleClicks}/>
           )}
         </div>
       ) : (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+        <div className='md:mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
           {Array.isArray(data) && data?.map((emp,idx) => (
             <div key={idx} onClick={() => handleClicks(emp.id)}>
               <EmployeeCard data={emp}/>

@@ -55,3 +55,6 @@ export const fetchBadges = async ():Promise<Badge[]> => {
         throw new Error("Failed to fetch badges",error.message); // Propagate to React Query so isError is set
   }
 }
+
+
+
